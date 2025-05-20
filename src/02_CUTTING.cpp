@@ -15,7 +15,6 @@ void performCutCycle() {
 
   // Short delay to ensure clamps are engaged before movement
   // This is a blocking delay, consider if a non-blocking alternative is needed for complex state management
-  delay(500); // 500 ms delay, adjust as necessary
 
   Serial.println("CUTTING: Moving cut motor for cutting operation...");
   if (cutMotorStepper) {

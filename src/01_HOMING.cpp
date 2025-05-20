@@ -36,8 +36,8 @@ void runHomingSequence() {
   cutMotorSwitch.attach(CUT_MOTOR_HOMING_SWITCH_PIN, INPUT_PULLDOWN);
   positionMotorSwitch.attach(POSITION_MOTOR_HOMING_SWITCH_PIN, INPUT_PULLDOWN);
 
-  cutMotorSwitch.interval(10); // 10 ms debounce interval
-  positionMotorSwitch.interval(10); // 10 ms debounce interval
+  cutMotorSwitch.interval(5); // 10 ms debounce interval
+  positionMotorSwitch.interval(5); // 10 ms debounce interval
 
   // Force an initial update of switch states
   cutMotorSwitch.update();
@@ -104,35 +104,17 @@ void runHomingSequence() {
       unsigned long motorMoveStartTime = millis();
       while (positionMotorStepper->isRunning()) {
         delay(0); // Yield for other tasks, though this is blocking for homing
-        if (millis() - motorMoveStartTime > 10000) { // Timeout for the 1-inch move (10 seconds)
-            Serial.println("ERROR: Timeout waiting for position motor to move 1 inch from home switch!");
-            positionMotorStepper->stopMove(); // Stop the motor
-            break; // Exit the while(isRunning) loop
-        }
       }
       
       positionMotorStepper->setCurrentPosition(0); // New zero is 1 inch away from the switch
       positionMotorHomed = true;
       Serial.println("Position motor homed and offset by 1 inch. New zero set.");
-    }
-    
-    // Add a check for excessive time spent homing (safety feature)
-    if (millis() - homingStartTime > 60000) { // 60 second timeout
-        Serial.println("ERROR: Homing sequence timed out after 60 seconds!");
-        // If we timed out, consider the motors homed to avoid getting stuck
-        cutMotorHomed = true;
-        positionMotorHomed = true;
-        
-        // Stop any running motors
-        if (cutMotorStepper && !cutMotorHomed) {
-            cutMotorStepper->stopMove();
-            Serial.println("Cut motor stopped due to timeout");
-        }
-        if (positionMotorStepper && !positionMotorHomed) {
-            positionMotorStepper->stopMove();
-            Serial.println("Position motor stopped due to timeout");
-        }
-        break;
+
+      positionMotorStepper->moveTo(3.45); // Move 3.45 inches from home switch
+      while (positionMotorStepper->isRunning()) {
+                delay(0); // Yield for other tasks, though this is blocking for homing
+      }
+      Serial.println("Position motor moved to 3.45 inches from home switch.");
     }
     
     delay(0); 
