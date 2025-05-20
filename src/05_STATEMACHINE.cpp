@@ -13,6 +13,7 @@
 // This file contains the definitions for the state machine. 
 
 MachineState currentState;
+ErrorCode currentError = NO_ERROR_EC; // Definition for the global error code
 
 // Helper function to convert MachineState enum to string for printing
 const char* stateToString(MachineState state) {
@@ -51,7 +52,8 @@ void transitionToState(MachineState newState) {
             performCutCycle(); // Call the cutting cycle function
             break;
         case YES_WOOD:
-            enterYesWoodState();
+            // enterYesWoodState(); // Old function call
+            showYesWoodIndicator(); // New function for YesWood state entry/indication
             break;
         case NO_WOOD:
             enterNoWoodState();
@@ -75,7 +77,8 @@ void runStateMachine() {
             // runCuttingState(); // Now handled by performCutCycle on entry
             break;
         case YES_WOOD:
-            runYesWoodState();
+            // runYesWoodState(); // Old function call
+            handleYesWoodState(); // New function for YesWood state logic
             break;
         case NO_WOOD:
             runNoWoodState();
@@ -85,4 +88,13 @@ void runStateMachine() {
             // Serial.println("In an unknown state!"); // Can be too verbose
             break;
     }
+}
+
+// --- Utility Functions ---
+bool Wait(unsigned long interval, unsigned long* startTime) {
+  if (millis() - *startTime >= interval) {
+    *startTime = millis(); // Reset start time for the next potential wait or just to update
+    return true; // Interval has passed
+  }
+  return false; // Interval has not passed
 } 

@@ -6,4 +6,6 @@
 //* ************************************************************************
 // This file contains the declarations for the homing state functions. 
 
-void runHomingSequence(); 
+void runHomingSequence();
+void homeCutMotor();
+void homePositionMotor();

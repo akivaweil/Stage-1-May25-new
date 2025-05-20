@@ -16,7 +16,7 @@ const float CUT_MOTOR_STEPS_PER_INCH = 500;
 const float POSITION_MOTOR_STEPS_PER_INCH = 1000;
 
 // Travel Distances
-const float CUT_MOTOR_TRAVEL_DISTANCE = 5.00;  // inches
+const float CUT_MOTOR_TRAVEL_DISTANCE = 3.0;  // inches
 const float POSITION_MOTOR_TRAVEL_DISTANCE = 3.45;  // inches
 
 // Accelerations
@@ -26,8 +26,10 @@ const float POSITION_MOTOR_ACCELERATION = 30000;  // steps/sec²
 // --- Speeds by State ---
 
 // Homing State
-const float CUT_MOTOR_HOMING_SPEED = 166;  // steps/sec
-const float POSITION_MOTOR_HOMING_SPEED = 166;  // steps/sec
+const float CUT_MOTOR_HOMING_SPEED = 1000;  // steps/sec
+const float POSITION_MOTOR_HOMING_SPEED = 1000;  // steps/sec
+const float CUT_MOTOR_HOMING_ACCELERATION = 2000; // steps/sec²
+const float POSITION_MOTOR_HOMING_ACCELERATION = 3000; // steps/sec²
 
 // Cutting State
 const float CUT_MOTOR_CUTTING_SPEED = 1000;  // steps/sec - slower speed for precise cutting
@@ -71,3 +73,29 @@ const float TRANSFER_ARM_SIGNAL_POSITION = 7.2;  // inches
 #define YELLOW_LED_PIN 48
 #define GREEN_LED_PIN 47
 #define BLUE_LED_PIN 21 
+
+// --- Motor Control Function Declarations ---
+void configureCutMotorForReturn();
+void configurePositionMotorForReturn();
+void configureCutMotorForNormalOperation();
+void configurePositionMotorForNormalOperation();
+void moveCutMotorToPositionInches(float positionInches);
+void movePositionMotorToPositionInches(float positionInches);
+bool isCutMotorAtTarget(); 
+bool isPositionMotorAtTarget();
+
+// --- Switch and Sensor Function Declarations ---
+bool isCutMotorAtHome();
+bool readPositionMotorHomingSwitch();
+
+// --- LED Control Function Declarations ---
+void setYellowLed(bool state);
+void setGreenLed(bool state);
+void setBlueLed(bool state);
+void setRedLed(bool state); 
+
+// --- Clamp Control Function Declarations ---
+void extendSecureWoodClamp();
+void retractSecureWoodClamp();
+void extendPositionClamp();
+void retractPositionClamp(); 

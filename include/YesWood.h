@@ -1,10 +1,6 @@
 #pragma once
-#include <Arduino.h>
 
-//* ************************************************************************
-//* **************************** YES WOOD ********************************
-//* ************************************************************************
-// This file contains the declarations for the 'wood present' state functions. 
+#include "settings.h"
 
-void enterYesWoodState();
-void runYesWoodState(); 
+void handleYesWoodState();
+void showYesWoodIndicator(); 
